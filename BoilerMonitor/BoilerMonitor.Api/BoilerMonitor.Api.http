@@ -1,0 +1,6 @@
+@BoilerMonitor.Api_HostAddress = http://localhost:5297
+
+GET {{BoilerMonitor.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
