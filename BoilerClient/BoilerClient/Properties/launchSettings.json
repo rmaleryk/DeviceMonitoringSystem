@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BoilerClient": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
