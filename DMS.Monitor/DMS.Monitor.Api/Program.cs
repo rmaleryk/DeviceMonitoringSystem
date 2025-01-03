@@ -7,6 +7,8 @@ using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddOptions<TemperatureThresholds>()
     .BindConfiguration("BoilerTemperatureThresholds")
     .ValidateDataAnnotations()
@@ -23,6 +25,8 @@ builder.Services.AddDomainConverters();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseHttpsRedirection();
 
