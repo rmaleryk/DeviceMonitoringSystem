@@ -15,10 +15,8 @@ public static class ServiceCollectionExtension
             throw new ArgumentNullException(nameof(settings), "Boiler device API settings are empty.");
         }
 
-        services.AddHttpClient<IBoilerDeviceApiClient, BoilerDeviceApiClient>(client =>
-        {
-            client.BaseAddress = new Uri(settings.Host);
-        });
+        services.AddHttpClient<IBoilerDeviceApiClient, BoilerDeviceApiClient>(client => 
+            client.BaseAddress = new Uri(settings.Host));
 
         return services;
     }

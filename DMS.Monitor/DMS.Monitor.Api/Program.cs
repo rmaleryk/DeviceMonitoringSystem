@@ -12,8 +12,8 @@ builder.Services.AddOptions<TemperatureThresholds>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-var rabbitMqSettings = builder.Configuration.GetSection("RabbitMq").Get<RabbitMqSettings>()!;
-builder.Services.AddMassTransit(rabbitMqSettings);
+var rabbitMqConnectionString = builder.Configuration.GetConnectionString("dms-mq")!;
+builder.Services.AddMassTransit(rabbitMqConnectionString);
 
 var devicesSettings = builder.Configuration.GetSection("Devices").Get<DevicesSettings>()!;
 builder.Services.AddBoilerApiClient(devicesSettings.BoilerDeviceApi);

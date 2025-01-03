@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using DMS.Monitor.Application.Configuration;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,21 +6,17 @@ namespace DMS.Monitor.Application.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddMassTransit(this IServiceCollection services, RabbitMqSettings rabbitMqSettings)
+    public static IServiceCollection AddMassTransit(this IServiceCollection services, string connectionString)
     {
         services.AddMassTransit(config =>
         {
             config.SetKebabCaseEndpointNameFormatter();
 
-            config.AddConsumers(Assembly.Load("DMS.Monitor.Application"));
+            config.AddConsumers(Assembly.GetExecutingAssembly());
 
             config.UsingRabbitMq((context, config) =>
             {
-                config.Host(rabbitMqSettings.Host, "/", h =>
-                {
-                    h.Username(rabbitMqSettings.Username!);
-                    h.Password(rabbitMqSettings.Password!);
-                });
+                config.Host(new Uri(connectionString), "/");
 
                 config.ConfigureEndpoints(context);
             });

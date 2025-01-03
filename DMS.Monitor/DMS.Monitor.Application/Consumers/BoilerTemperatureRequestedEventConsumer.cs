@@ -8,44 +8,29 @@ using Microsoft.Extensions.Options;
 
 namespace DMS.Monitor.Application.Consumers;
 
-public class BoilerTemperatureRequestedEventConsumer : IConsumer<BoilerTemperatureRequestedEvent>
+public class BoilerTemperatureRequestedEventConsumer(
+    IBus bus,
+    IBoilerDeviceApiClient boilerApiClient,
+    ITemperatureConverter temperatureConverter,
+    ILogger<BoilerTemperatureRequestedEventConsumer> logger,
+    IOptions<TemperatureThresholds> temperatureThresholds) : IConsumer<BoilerTemperatureRequestedEvent>
 {
-    private readonly IBus _bus;
-    private readonly IBoilerDeviceApiClient _boilerDeviceApiClient;
-    private readonly ITemperatureConverter _temperatureConverter;
-    private readonly ILogger<BoilerTemperatureRequestedEventConsumer> _logger;
-    private readonly TemperatureThresholds _temperatureThresholds;
-
-    public BoilerTemperatureRequestedEventConsumer(
-        IBus bus,
-        IBoilerDeviceApiClient boilerApiClient,
-        ITemperatureConverter temperatureConverter,
-        ILogger<BoilerTemperatureRequestedEventConsumer> logger,
-        IOptions<TemperatureThresholds> temperatureThresholds)
-    {
-        _bus = bus;
-        _boilerDeviceApiClient = boilerApiClient;
-        _temperatureConverter = temperatureConverter;
-        _logger = logger;
-        _temperatureThresholds = temperatureThresholds.Value;
-    }
-
     public async Task Consume(ConsumeContext<BoilerTemperatureRequestedEvent> context)
     {
-        var temperatureFahrenheit = await _boilerDeviceApiClient.GetTemperatureAsync();
-        var temperatureCelsius = _temperatureConverter.ToCelsius(temperatureFahrenheit);
+        var temperatureFahrenheit = await boilerApiClient.GetTemperatureAsync();
+        var temperatureCelsius = temperatureConverter.ToCelsius(temperatureFahrenheit);
 
         ValidateTemperature(temperatureCelsius);
 
-        await _bus.Publish(new BoilerTemperatureUpdatedEvent(temperatureCelsius));
+        await bus.Publish(new BoilerTemperatureUpdatedEvent(temperatureCelsius));
     }
 
     private void ValidateTemperature(double temperatureCelsius)
     {
-        if (temperatureCelsius < _temperatureThresholds.MinTemperature ||
-            temperatureCelsius > _temperatureThresholds.MaxTemperature)
+        if (temperatureCelsius < temperatureThresholds.Value.MinTemperature ||
+            temperatureCelsius > temperatureThresholds.Value.MaxTemperature)
         {
-            _logger.LogError("Temperature out of range: {Temperature}°C", temperatureCelsius);
+            logger.LogError("Temperature out of range: {Temperature}°C", temperatureCelsius);
         }
     }
 }
