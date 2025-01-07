@@ -8,9 +8,9 @@ namespace DMS.Monitor.Application.Write.Boilers.Consumers;
 
 public class BoilerTemperatureRequestedEventConsumer(
     ISender sender,
-    ILogger<BoilerTemperatureRequestedEventConsumer> logger) : IConsumer<BoilerTemperatureRequestedEvent>
+    ILogger<BoilerTemperatureRequestedEventConsumer> logger) : IConsumer<BoilerTemperatureRequestedIntegrationEvent>
 {
-    public async Task Consume(ConsumeContext<BoilerTemperatureRequestedEvent> context)
+    public async Task Consume(ConsumeContext<BoilerTemperatureRequestedIntegrationEvent> context)
     {
         logger.LogInformation("Requested updating temperature for the boiler with id {Id}", context.Message.Id);
         await sender.Send(new UpdateBoilerTemperatureCommand(context.Message.Id), context.CancellationToken);

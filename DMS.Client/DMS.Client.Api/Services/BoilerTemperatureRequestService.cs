@@ -19,7 +19,7 @@ public class BoilerTemperatureRequestService(
             try
             {
                 var boilerId = boilerConfiguration.Value.Id!.Value;
-                await bus.Publish(new BoilerTemperatureRequestedEvent(boilerId), stoppingToken);
+                await bus.Publish(new BoilerTemperatureRequestedIntegrationEvent(boilerId), stoppingToken);
                 logger.LogInformation("Temperature request sent");
             }
             catch (RequestTimeoutException ex)

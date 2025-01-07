@@ -6,9 +6,9 @@ namespace DMS.Client.Api.Consumers;
 
 public class BoilerTemperatureUpdatedEventConsumer(
     BoilerTemperatureCache boilerTemperatureCache,
-    ILogger<BoilerTemperatureUpdatedEventConsumer> logger) : IConsumer<BoilerTemperatureUpdatedEvent>
+    ILogger<BoilerTemperatureUpdatedEventConsumer> logger) : IConsumer<BoilerTemperatureUpdatedIntegrationEvent>
 {
-    public Task Consume(ConsumeContext<BoilerTemperatureUpdatedEvent> context)
+    public Task Consume(ConsumeContext<BoilerTemperatureUpdatedIntegrationEvent> context)
     {
         logger.LogInformation("Saving updated temperature: {Temperature}°C", context.Message.TemperatureCelsius);
 

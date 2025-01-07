@@ -1,4 +1,5 @@
-﻿using DMS.Monitor.Domain.Base;
+﻿using DMS.Monitor.Contracts.Public.Events.Boilers;
+using DMS.Monitor.Domain.Base;
 using DMS.Monitor.Domain.Boilers;
 using MassTransit;
 using MediatR;
@@ -41,7 +42,7 @@ public sealed class BoilerEventHandler :
         var domainEvent = notification.DomainEvent;
 
         await _publishEndpoint.Publish(
-            new BoilerTemperatureUpdatedEvent(domainEvent.Id, domainEvent.NewTemperature),
+            new BoilerTemperatureUpdatedIntegrationEvent(domainEvent.Id, domainEvent.NewTemperature),
             cancellationToken);
     }
 }
