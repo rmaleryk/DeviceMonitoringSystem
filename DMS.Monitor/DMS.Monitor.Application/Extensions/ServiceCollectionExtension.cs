@@ -1,27 +1,11 @@
-﻿using System.Reflection;
-using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace DMS.Monitor.Application.Extensions;
+namespace DMS.Monitor.Application.Read.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddMassTransit(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddApplicationRead(this IServiceCollection services)
     {
-        services.AddMassTransit(config =>
-        {
-            config.SetKebabCaseEndpointNameFormatter();
-
-            config.AddConsumers(Assembly.GetExecutingAssembly());
-
-            config.UsingRabbitMq((context, config) =>
-            {
-                config.Host(new Uri(connectionString), "/");
-
-                config.ConfigureEndpoints(context);
-            });
-        });
-
         return services;
     }
 }

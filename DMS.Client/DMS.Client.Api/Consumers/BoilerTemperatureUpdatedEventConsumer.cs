@@ -1,5 +1,5 @@
 ﻿using DMS.Client.Api.Caching;
-using DMS.Monitor.Contracts.Public.Events.BoilerDevice;
+using DMS.Monitor.Contracts.Public.Events.Boilers;
 using MassTransit;
 
 namespace DMS.Client.Api.Consumers;
@@ -12,7 +12,7 @@ public class BoilerTemperatureUpdatedEventConsumer(
     {
         logger.LogInformation("Saving updated temperature: {Temperature}°C", context.Message.TemperatureCelsius);
 
-        boilerTemperatureCache.SetTemperature(context.Message.TemperatureCelsius);
+        boilerTemperatureCache.SetTemperature(context.Message.Id, context.Message.TemperatureCelsius);
 
         return Task.CompletedTask;
     }

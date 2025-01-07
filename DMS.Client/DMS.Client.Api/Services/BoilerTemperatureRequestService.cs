@@ -1,10 +1,13 @@
-﻿using DMS.Monitor.Contracts.Public.Events.BoilerDevice;
+﻿using DMS.Client.Api.Configuration;
+using DMS.Monitor.Contracts.Public.Events.Boilers;
 using MassTransit;
+using Microsoft.Extensions.Options;
 
 namespace DMS.Client.Api.Services;
 
 public class BoilerTemperatureRequestService(
     IBus bus,
+    IOptions<BoilerConfiguration> boilerConfiguration,
     ILogger<BoilerTemperatureRequestService> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -15,7 +18,8 @@ public class BoilerTemperatureRequestService(
 
             try
             {
-                await bus.Publish(new BoilerTemperatureRequestedEvent(), stoppingToken);
+                var boilerId = boilerConfiguration.Value.Id!.Value;
+                await bus.Publish(new BoilerTemperatureRequestedEvent(boilerId), stoppingToken);
                 logger.LogInformation("Temperature request sent");
             }
             catch (RequestTimeoutException ex)

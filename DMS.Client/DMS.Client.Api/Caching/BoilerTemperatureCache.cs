@@ -6,11 +6,10 @@ public class BoilerTemperatureCache(
     IMemoryCache memoryCache,
     ILogger<BoilerTemperatureCache> logger)
 {
-    private const string CacheKey = "boiler_temperature";
-
-    public double? GetTemperature()
+    public double? GetTemperature(Guid id)
     {
-        var hasTemperature = memoryCache.TryGetValue<double>(CacheKey, out var temperature);
+        var cacheKey = GetCacheKey(id);
+        var hasTemperature = memoryCache.TryGetValue<double>(cacheKey, out var temperature);
         if (!hasTemperature)
         {
             logger.LogWarning("Cache doesn't contain boiler temperature.");
@@ -20,8 +19,11 @@ public class BoilerTemperatureCache(
         return temperature;
     }
 
-    public void SetTemperature(double temperature)
+    public void SetTemperature(Guid id, double temperature)
     {
-        memoryCache.Set(CacheKey, temperature);
+        var cacheKey = GetCacheKey(id);
+        memoryCache.Set(cacheKey, temperature);
     }
+
+    private static string GetCacheKey(Guid id) => $"boiler_{id}_temperature";
 }

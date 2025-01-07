@@ -2,9 +2,9 @@
 
 public class DevicesSettings
 {
-    public BoilerDeviceApiSettings? BoilerDeviceApi { get; set; }
+    public BoilerApiSettings? BoilerApi { get; set; }
 
-    public class BoilerDeviceApiSettings
+    public class BoilerApiSettings
     {
         public string Host { get; set; } = string.Empty;
     }

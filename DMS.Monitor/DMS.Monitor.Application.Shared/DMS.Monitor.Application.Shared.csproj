@@ -7,13 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DMS.Monitor.Contracts\DMS.Monitor.Contracts.csproj" />
     <ProjectReference Include="..\DMS.Monitor.Domain\DMS.Monitor.Domain.csproj" />
-    <ProjectReference Include="..\DMS.Monitor.Infrastructure\DMS.Monitor.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

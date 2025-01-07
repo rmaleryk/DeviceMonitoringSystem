@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DMS.Monitor.Application.Configuration;
+namespace DMS.Monitor.Application.Write.Configuration;
 
-public class TemperatureThresholds
+public class BoilerTemperatureThresholds
 {
     [Required]
     public double? MinTemperature { get; set; }

@@ -1,8 +1,14 @@
 using DMS.Client.Api.Caching;
+using DMS.Client.Api.Configuration;
 using DMS.Client.Api.Services;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOptions<BoilerConfiguration>()
+    .BindConfiguration("BoilerConfiguration")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 builder.Services.AddMassTransit(config =>
 {

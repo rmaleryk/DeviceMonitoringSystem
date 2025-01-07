@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DMS.Monitor.Application.Shared\DMS.Monitor.Application.Shared.csproj" />
+    <ProjectReference Include="..\DMS.Monitor.Contracts\DMS.Monitor.Contracts.csproj" />
+    <ProjectReference Include="..\DMS.Monitor.Infrastructure\DMS.Monitor.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

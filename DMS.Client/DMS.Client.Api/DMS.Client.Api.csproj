@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <Reference Include="DMS.Monitor.Contracts">
-	  <HintPath>..\..\DMS.Monitor\DMS.Monitor.Contracts\bin\Debug\net8.0\DMS.Monitor.Contracts.dll</HintPath>
-	</Reference>
+      <HintPath>..\..\DMS.Monitor\DMS.Monitor.Api\bin\Debug\net9.0\DMS.Monitor.Contracts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -8,14 +8,14 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddBoilerApiClient(
         this IServiceCollection services,
-        DevicesSettings.BoilerDeviceApiSettings? settings)
+        DevicesSettings.BoilerApiSettings? settings)
     {
         if (settings == null)
         {
-            throw new ArgumentNullException(nameof(settings), "Boiler device API settings are empty.");
+            throw new ArgumentNullException(nameof(settings), "Boiler API settings are empty.");
         }
 
-        services.AddHttpClient<IBoilerDeviceApiClient, BoilerDeviceApiClient>(client => 
+        services.AddHttpClient<IBoilerApiClient, BoilerApiClient>(client => 
             client.BaseAddress = new Uri(settings.Host));
 
         return services;

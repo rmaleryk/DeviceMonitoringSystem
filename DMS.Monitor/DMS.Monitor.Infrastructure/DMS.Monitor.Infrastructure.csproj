@@ -7,9 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="MassTransit.RabbitMQ" Version="8.3.4" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+	  <PrivateAssets>all</PrivateAssets>
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DMS.Monitor.Domain\DMS.Monitor.Domain.csproj" />
   </ItemGroup>
 
 </Project>
