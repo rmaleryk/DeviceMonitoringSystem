@@ -2,6 +2,7 @@
 using DMS.Monitor.Domain.Base;
 using DMS.Monitor.Domain.Boilers;
 using DMS.Monitor.Infrastructure.Persistence.Boilers;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS.Monitor.Infrastructure.Persistence;
@@ -22,7 +23,13 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        const string resilienceSchema = "MassTransit";
+
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.AddInboxStateEntity(e => e.ToTable("InboxState", resilienceSchema));
+        modelBuilder.AddOutboxMessageEntity(e => e.ToTable("OutboxMessage", resilienceSchema));
+        modelBuilder.AddOutboxStateEntity(e => e.ToTable("OutboxState", resilienceSchema));
 
         modelBuilder
             .ApplyConfiguration(new BoilerTypeConfiguration());

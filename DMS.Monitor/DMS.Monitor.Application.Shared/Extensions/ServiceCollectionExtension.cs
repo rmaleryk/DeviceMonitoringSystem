@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using DMS.Monitor.Application.Shared.Extensions;
+using DMS.Monitor.Infrastructure.Persistence;
 using MassTransit;
 using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,15 @@ public static class ServiceCollectionExtension
 
             config.AddConsumers(Assembly.Load(ReadAssemblyName));
             config.AddConsumers(Assembly.Load(WriteAssemblyName));
+
+            config.AddEntityFrameworkOutbox<ApplicationDbContext>(outboxConfig =>
+            {
+                outboxConfig.UseSqlServer();
+                outboxConfig.UseBusOutbox();
+            });
+
+            config.AddConfigureEndpointsCallback((context, name, endpointConfig) =>
+                endpointConfig.UseEntityFrameworkOutbox<ApplicationDbContext>(context));
 
             config.UsingRabbitMq((context, config) =>
             {
