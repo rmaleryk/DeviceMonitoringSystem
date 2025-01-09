@@ -1,14 +1,22 @@
-# Boiler monitoring service
+# Device monitoring service
 
-The main purpose of the microservice is to allow other microservices across the system to get the current temperature inside the Boiler (accessible via internal HTTP API) using event-driven approach with RabbitMQ message broker. In addition, the temperature is converted from Fahrenheit to Celsius under the hood.
+The solution was created as a pet-project to cover the following topics/technologies:
+- Event-Driven Architecture
+- Domain-Driven Design
+- CQRS
+- Event Sourcing
+- MassTransit (incl. Saga, Transactional Outbox)
+- RabbitMQ
+- State machine (Stateless library)
+
+The main goal of the solution is to allow various microservices in the system to receive device data (e.g. boiler temperature) available through an internal HTTP API, using an event-driven approach with the RabbitMQ message broker.
 
 ### Solutions
-- `BoilerMonitor` - main microservice; 
-- `SharedKernel` - shared message contracts;
-- `BoilerApi` - fake internal Boiler HTTP API;
-- `BoilerClient` - fake RabbitMQ API consumer.
+- `DMS.Monitor` - core microservice for managing device states;
+- `DMS.Client` - RabbitMQ consumer that requests and receives device data;
+- `DMS.FakeDevices` - fake devices HTTP API.
 
 ### Getting started
-1. Build the `SharedKernel` assembly to be accessible in `BoilerMonitor` and `BoilerClient` as a reference.
-2. Start `BoilerApi`, `BoilerMonitor` and `BoilerClient` apps.
-3. `BoilerClient` will send request each 5 seconds.
+1. Start `DMS.Monitor`, `DMS.Client` and `DMS.FakeDevices` services.
+2. `DMS.Client` will send requests every 5 seconds.
+3. Also, REST API is available for `DMS.Monitor` and `DMS.Client` services.
