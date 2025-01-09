@@ -1,4 +1,4 @@
-# Device monitoring service
+# Device monitoring system
 
 The solution was created as a pet-project to cover the following topics/technologies:
 - Event-Driven Architecture
