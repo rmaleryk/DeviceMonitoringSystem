@@ -3,6 +3,8 @@ using DMS.Monitor.Application.Shared.Extensions;
 using DMS.Monitor.Infrastructure.Persistence;
 using MassTransit;
 using MediatR.NotificationPublishers;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DMS.Monitor.Application.Shared.Extensions;
@@ -34,7 +36,18 @@ public static class ServiceCollectionExtension
             {
                 config.Host(new Uri(connectionString), "/");
 
+                config.PrefetchCount = 1;
                 config.ConfigureEndpoints(context);
+
+                config.UseMessageRetry(r =>
+                {
+                    var retryCount = 10;
+                    r.Immediate(retryCount);
+                    r.Handle<DbUpdateException>();
+                    r.Handle<SqlException>();
+                });
+
+                config.UseInstrumentation();
             });
         });
 

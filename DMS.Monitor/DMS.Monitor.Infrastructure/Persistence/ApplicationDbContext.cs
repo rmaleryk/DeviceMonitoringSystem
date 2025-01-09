@@ -44,6 +44,10 @@ public class ApplicationDbContext : DbContext
 
         using var transaction = new TransactionScope(
             TransactionScopeOption.Required,
+            new TransactionOptions
+            {
+                IsolationLevel = IsolationLevel.ReadCommitted
+            },
             TransactionScopeAsyncFlowOption.Enabled);
 
         var result = await SaveAndPublishEvents(cancellationToken);
