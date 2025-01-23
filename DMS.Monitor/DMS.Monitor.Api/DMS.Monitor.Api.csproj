@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DMS.Monitor.Application.Shared\DMS.Monitor.Application.Shared.csproj" />
     <ProjectReference Include="..\DMS.Monitor.Application.Write\DMS.Monitor.Application.Write.csproj" />
-    <ProjectReference Include="..\DMS.Monitor.Application\DMS.Monitor.Application.Read.csproj" />
+    <ProjectReference Include="..\DMS.Monitor.Application.Read\DMS.Monitor.Application.Read.csproj" />
     <ProjectReference Include="..\DMS.Monitor.Infrastructure\DMS.Monitor.Infrastructure.csproj" />
   </ItemGroup>
 

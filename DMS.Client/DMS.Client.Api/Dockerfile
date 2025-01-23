@@ -12,6 +12,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# Copy the NuGet.Config file to configure the GitHub package source
+COPY ["DMS.Client.Api/NuGet.Config", "/root/.nuget/NuGet/NuGet.Config"]
+
+# Set the environment variable for the GitHub token (pass this dynamically during build)
+ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=${GITHUB_TOKEN}
+ARG GITHUB_USER
+ENV GITHUB_USER=${GITHUB_USER}
+
+# Copy and restore the project
 COPY ["DMS.Client.Api/DMS.Client.Api.csproj", "DMS.Client.Api/"]
 RUN dotnet restore "./DMS.Client.Api/DMS.Client.Api.csproj"
 COPY . .

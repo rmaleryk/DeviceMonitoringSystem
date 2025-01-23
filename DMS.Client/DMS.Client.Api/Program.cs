@@ -18,7 +18,7 @@ builder.Services.AddMassTransit(config =>
 
     config.UsingRabbitMq((context, config) =>
     {
-        var rabbitMqConnectionString = builder.Configuration.GetConnectionString("dms-mq")!;
+        var rabbitMqConnectionString = builder.Configuration.GetConnectionString("RabbitMq")!;
 
         config.Host(new Uri(rabbitMqConnectionString), "/");
         config.ConfigureEndpoints(context);

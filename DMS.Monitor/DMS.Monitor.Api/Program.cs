@@ -14,10 +14,10 @@ builder.Services.AddOptions<BoilerTemperatureThresholds>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-var sqlDbConnectionString = builder.Configuration.GetConnectionString("dms-sql")!;
+var sqlDbConnectionString = builder.Configuration.GetConnectionString("MonitorSqlDb")!;
 builder.Services.AddPersistence(sqlDbConnectionString);
 
-var rabbitMqConnectionString = builder.Configuration.GetConnectionString("dms-mq")!;
+var rabbitMqConnectionString = builder.Configuration.GetConnectionString("RabbitMq")!;
 builder.Services
     .AddMassTransit(rabbitMqConnectionString)
     .AddMediatR();
