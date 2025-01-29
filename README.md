@@ -8,6 +8,7 @@ The solution was created as a pet-project to cover the following topics/technolo
 - MassTransit (incl. Saga, Transactional Outbox)
 - RabbitMQ
 - State machine (Stateless library)
+- Orchestrators: Kubernetes, .NET Aspire (planned)
 
 The main goal of the solution is to allow various microservices in the system to receive device data (e.g. boiler temperature) available through an internal HTTP API, using an event-driven approach with the RabbitMQ message broker.
 
