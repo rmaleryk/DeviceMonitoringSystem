@@ -3,7 +3,7 @@ using DMS.Monitor.Domain.Boilers.Enums;
 
 namespace DMS.Monitor.Domain.Boilers;
 
-public sealed class Boiler : AggregateRoot
+public sealed class Boiler : EventSourcedAggregateRoot
 {
     private BoilerStateMachine? _machine;
 
@@ -25,23 +25,21 @@ public sealed class Boiler : AggregateRoot
 
     public void TurnOn()
     {
-        SetState(BoilerStateMachine.Trigger.TurnOn);
-        AddDomainEvent(new BoilerTurnedOnEvent(Id));
+        RaiseDomainEvent(new BoilerTurnedOnEvent(Id));
     }
 
     public void TurnOff()
     {
-        SetState(BoilerStateMachine.Trigger.TurnOff);
-        AddDomainEvent(new BoilerTurnedOffEvent(Id));
+        RaiseDomainEvent(new BoilerTurnedOffEvent(Id));
     }
 
     public bool UpdateTemperature(double newTemperature, double minTemperature, double maxTemperature)
     {
-        CurrentTemperature = BoilerTemperature.FromValue(newTemperature);
-        AddDomainEvent(new BoilerTemperatureUpdatedEvent(Id, newTemperature));
-
+        RaiseDomainEvent(new BoilerTemperatureUpdatedEvent(Id, newTemperature));
         return CurrentTemperature.Validate(minTemperature, maxTemperature);
     }
+
+    protected override EventSourcedAggregateRoot Apply(DomainEvent e) => Apply((dynamic)e);
 
     private void SetState(BoilerStateMachine.Trigger trigger)
     {
@@ -52,6 +50,24 @@ public sealed class Boiler : AggregateRoot
 
         _machine!.ValidateAndFire(trigger);
         State = _machine.State;
+    }
+
+    private Boiler Apply(BoilerTurnedOnEvent _)
+    {
+        SetState(BoilerStateMachine.Trigger.TurnOn);
+        return this;
+    }
+
+    private Boiler Apply(BoilerTurnedOffEvent _)
+    {
+        SetState(BoilerStateMachine.Trigger.TurnOff);
+        return this;
+    }
+
+    private Boiler Apply(BoilerTemperatureUpdatedEvent e)
+    {
+        CurrentTemperature = BoilerTemperature.FromValue(e.NewTemperature);
+        return this;
     }
 
     private void InitStateMachine()

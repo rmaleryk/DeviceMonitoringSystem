@@ -3,6 +3,7 @@ using DMS.Monitor.Domain.Persistence;
 using DMS.Monitor.Infrastructure.DomainEvents;
 using DMS.Monitor.Infrastructure.Persistence.Boilers;
 using DMS.Monitor.Infrastructure.Persistence.Common;
+using DMS.Monitor.Infrastructure.Persistence.EventStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,11 +19,9 @@ public static class ServiceCollectionExtension
         }
 
         services.AddDbContext<ApplicationDbContext>(builder =>
-        {
             builder.UseSqlServer(
                 connectionString,
-                opts => opts.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
-        });
+                opts => opts.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
         services.AddScoped(_ => new SqlInitializationData(connectionString));
         services.AddTransient<IDomainEventDispatcher, MediatorDomainEventDispatcher>();
@@ -40,7 +39,8 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddWriteLayer(this IServiceCollection services)
     {
         services
-            .AddTransient<IBoilerRepository, BoilerRepository>();
+            .AddTransient<IBoilerRepository, BoilerRepository>()
+            .AddScoped<IEventStoreRepository, EventStoreRepository>();
 
         return services;
     }

@@ -36,7 +36,7 @@ public class BoilerCommandHandler :
 
     public async Task<CommandResult> Handle(TurnOnBoilerCommand command, CancellationToken cancellationToken)
     {
-        var boiler = await _boilerRepository.GetByIdAsync(command.Id);
+        var boiler = await _boilerRepository.GetByIdAsync(command.Id, cancellationToken);
         if (boiler is null)
         {
             return CommandResult.Failed(Guid.Empty, $"Boiler with id {command.Id} does not exist.");
@@ -48,14 +48,14 @@ public class BoilerCommandHandler :
         }
 
         boiler.TurnOn();
-        await _boilerRepository.SaveChangesAsync(cancellationToken);
+        await _boilerRepository.SaveAsync(boiler, cancellationToken);
 
         return CommandResult.Completed(boiler.Id);
     }
 
     public async Task<CommandResult> Handle(TurnOffBoilerCommand command, CancellationToken cancellationToken)
     {
-        var boiler = await _boilerRepository.GetByIdAsync(command.Id);
+        var boiler = await _boilerRepository.GetByIdAsync(command.Id, cancellationToken);
         if (boiler is null)
         {
             return CommandResult.Failed(Guid.Empty, $"Boiler with id {command.Id} does not exist.");
@@ -67,14 +67,14 @@ public class BoilerCommandHandler :
         }
 
         boiler.TurnOff();
-        await _boilerRepository.SaveChangesAsync(cancellationToken);
+        await _boilerRepository.SaveAsync(boiler, cancellationToken);
 
         return CommandResult.Completed(boiler.Id);
     }
 
     public async Task<CommandResult> Handle(UpdateBoilerTemperatureCommand command, CancellationToken cancellationToken)
     {
-        var boiler = await _boilerRepository.GetByIdAsync(command.Id);
+        var boiler = await _boilerRepository.GetByIdAsync(command.Id, cancellationToken);
         if (boiler is null)
         {
             return CommandResult.Failed(Guid.Empty, $"Boiler with id {command.Id} does not exist.");
@@ -96,7 +96,7 @@ public class BoilerCommandHandler :
                 newTemperatureCelsius);
         }
 
-        await _boilerRepository.SaveChangesAsync(cancellationToken);
+        await _boilerRepository.SaveAsync(boiler, cancellationToken);
 
         return CommandResult.Completed(boiler.Id);
     }

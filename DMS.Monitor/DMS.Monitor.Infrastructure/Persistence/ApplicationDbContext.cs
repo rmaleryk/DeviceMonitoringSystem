@@ -2,6 +2,7 @@
 using DMS.Monitor.Domain.Base;
 using DMS.Monitor.Domain.Boilers;
 using DMS.Monitor.Infrastructure.Persistence.Boilers;
+using DMS.Monitor.Infrastructure.Persistence.EventStore;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Boiler> Boilers { get; set; }
 
+    public DbSet<StoredEvent> StoredEvents { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         const string resilienceSchema = "MassTransit";
@@ -32,7 +35,8 @@ public class ApplicationDbContext : DbContext
         modelBuilder.AddOutboxStateEntity(e => e.ToTable("OutboxState", resilienceSchema));
 
         modelBuilder
-            .ApplyConfiguration(new BoilerTypeConfiguration());
+            .ApplyConfiguration(new BoilerTypeConfiguration())
+            .ApplyConfiguration(new StoredEventConfiguration());
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

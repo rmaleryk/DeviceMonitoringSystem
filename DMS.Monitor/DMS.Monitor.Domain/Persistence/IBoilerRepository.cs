@@ -2,6 +2,11 @@
 
 namespace DMS.Monitor.Domain.Persistence;
 
-public interface IBoilerRepository : IGenericRepository<Boiler>
+public interface IBoilerRepository
 {
+    Task<Boiler> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<List<Boiler>> GetAllAsync(CancellationToken cancellationToken);
+
+    Task SaveAsync(Boiler boiler, CancellationToken cancellationToken);
 }

@@ -23,8 +23,8 @@ public sealed class BoilerQueryHandler :
         GetBoilersQuery request,
         CancellationToken cancellationToken)
     {
-        var boilers = await _boilerRepository.GetListAsync(cancellationToken: cancellationToken);
-        if (!boilers.Any())
+        var boilers = await _boilerRepository.GetAllAsync(cancellationToken);
+        if (boilers.Count == 0)
         {
             _logger.LogInformation("There are no boilers registered.");
             return "There are no boilers registered.";
@@ -44,7 +44,7 @@ public sealed class BoilerQueryHandler :
         GetBoilerQuery request,
         CancellationToken cancellationToken)
     {
-        var boiler = await _boilerRepository.GetByIdAsync(request.Id);
+        var boiler = await _boilerRepository.GetByIdAsync(request.Id, cancellationToken);
         if (boiler is null)
         {
             _logger.LogWarning("Boiler with id {Id} does not exist", request.Id);

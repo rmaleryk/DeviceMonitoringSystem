@@ -4,6 +4,7 @@ public abstract record DomainEvent
 {
     public Guid EventId { get; set; } = Guid.NewGuid();
 
-    public DateTime EventDate { get; set; } = DateTime.UtcNow;
+    public DateTime OccurredOn { get; protected set; }
 
+    public int Version { get; set; }
 }

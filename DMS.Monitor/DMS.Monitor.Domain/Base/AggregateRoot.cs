@@ -9,14 +9,14 @@ public abstract class AggregateRoot : Entity
     [NotMapped]
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    public void AddDomainEvent(DomainEvent eventItem)
+    protected virtual void AddDomainEvent(DomainEvent domainEvent)
     {
-        _domainEvents.Add(eventItem);
+        _domainEvents.Add(domainEvent);
     }
 
-    public void RemoveDomainEvent(DomainEvent eventItem)
+    protected void RemoveDomainEvent(DomainEvent domainEvent)
     {
-        _domainEvents.Remove(eventItem);
+        _domainEvents.Remove(domainEvent);
     }
 
     public void ClearDomainEvents()
