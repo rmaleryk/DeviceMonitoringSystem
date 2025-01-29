@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dms-client-service
+  labels:
+    name: dms-client-service
+    app: device-monitoring-system
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30005
+  selector:
+    name: dms-client-pod
+    app: device-monitoring-system

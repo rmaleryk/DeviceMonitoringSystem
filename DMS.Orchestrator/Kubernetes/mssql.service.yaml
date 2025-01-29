@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-service
+  labels:
+    name: mssql-service
+    app: device-monitoring-system
+spec:
+  type: ClusterIP
+  ports:
+    - port: 1433
+      targetPort: 1433
+  selector:
+    name: mssql-pod
+    app: device-monitoring-system

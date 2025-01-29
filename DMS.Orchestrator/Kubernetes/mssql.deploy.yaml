@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deploy
+  labels:
+    name: mssql-deploy
+    app: device-monitoring-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mssql-pod
+      app: device-monitoring-system
+
+  template:
+    metadata:
+      name: mssql-pod
+      labels:
+        name: mssql-pod
+        app: device-monitoring-system
+    spec:
+      containers:
+        - name: mssql
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: "devSQL123admin!#"

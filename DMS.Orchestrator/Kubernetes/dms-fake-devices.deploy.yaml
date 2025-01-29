@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dms-fake-devices-deploy
+  labels:
+    name: dms-fake-devices-deploy
+    app: device-monitoring-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dms-fake-devices-pod
+      app: device-monitoring-system
+
+  template:
+    metadata:
+      name: dms-fake-devices-pod
+      labels:
+        name: dms-fake-devices-pod
+        app: device-monitoring-system
+    spec:
+      containers:
+        - name: dms-fake-devices
+          image: ghcr.io/rmaleryk/dms.fake-devices:latest
+          ports:
+            - containerPort: 8080

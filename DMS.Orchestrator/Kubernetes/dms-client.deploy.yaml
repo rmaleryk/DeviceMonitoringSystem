@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dms-client-deploy
+  labels:
+    name: dms-client-deploy
+    app: device-monitoring-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dms-client-pod
+      app: device-monitoring-system
+
+  template:
+    metadata:
+      name: dms-client-pod
+      labels:
+        name: dms-client-pod
+        app: device-monitoring-system
+    spec:
+      containers:
+        - name: dms-client
+          image: ghcr.io/rmaleryk/dms.client:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ConnectionStrings__RabbitMq
+              value: "amqp://guest:guest@rabbitmq-service:5672/"
+            - name: BoilerConfiguration__Id
+              value: "73ac767a-9781-420f-b3d1-2c8724c7a1e3"

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dms-monitor-deploy
+  labels:
+    name: dms-monitor-deploy
+    app: device-monitoring-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: dms-monitor-pod
+      app: device-monitoring-system
+
+  template:
+    metadata:
+      name: dms-monitor-pod
+      labels:
+        name: dms-monitor-pod
+        app: device-monitoring-system
+    spec:
+      containers:
+        - name: dms-monitor
+          image: ghcr.io/rmaleryk/dms.monitor:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ConnectionStrings__MonitorSqlDb
+              value: "Server=mssql-service;User ID=sa;Password=devSQL123admin!#;Database=DMS.MonitorDb;TrustServerCertificate=True;Integrated Security=false"
+            - name: ConnectionStrings__RabbitMq
+              value: "amqp://guest:guest@rabbitmq-service:5672/"
+            - name: Devices__BoilerApi__Host
+              value: "http://dms-fake-devices-service:30004/boilers/"
